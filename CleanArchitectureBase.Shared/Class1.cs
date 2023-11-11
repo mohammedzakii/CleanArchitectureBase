@@ -1,0 +1,7 @@
+﻿namespace CleanArchitectureBase.Shared
+{
+    public class Class1
+    {
+
+    }
+}
