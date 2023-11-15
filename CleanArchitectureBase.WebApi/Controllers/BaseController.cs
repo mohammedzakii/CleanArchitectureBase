@@ -17,7 +17,8 @@ namespace CleanArchitectureBase.WebApi.Controllers
             try
             {
                 var response = await Mediator.Send(request);
-                return Ok(new JsonRespone<TRequest> { Data = response, Message = "", StatusCode = (int)HttpStatusCode.OK, Success = true });
+
+                return Ok(new JsonRespone<TRequest> { Data = response, Message = response == null ? "Data Not Found" : "", StatusCode = (int)HttpStatusCode.OK, Success = true });
             }
             catch (NotFoundException ex) { return NotFound(new JsonRespone<int> { Data = 0, Message = ex.Message, StatusCode = (int)HttpStatusCode.NotFound, Success = false }); }
 

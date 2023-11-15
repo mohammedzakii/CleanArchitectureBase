@@ -1,10 +1,9 @@
-using CleanArchitectureBase.Application.Interfaces.Users.Commands;
 using CleanArchitectureBase.persistence;
 using Microsoft.EntityFrameworkCore;
 using MediatR;
 using CleanArchitectureBase.Application.Interfaces;
 using FluentValidation.AspNetCore;
-
+using CleanArchitectureBase.Application.Customers.Commands.Create;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,15 +16,23 @@ dbContextOptions => dbContextOptions
 
 
 builder.Services.AddMediatR(typeof(ApplicationDbContext).Assembly);
-builder.Services.AddMediatR(typeof(AddNewUserCommand).Assembly);
+builder.Services.AddMediatR(typeof(AddNewCustomerCommand).Assembly);
 //builder.Services.AddControllers();
 
-builder.Services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<AddNewUserCommandValidator>());
+
+builder.Services.AddSwaggerGen();
+
+builder.Services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<AddNewCustomersCommandValidator>());
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
