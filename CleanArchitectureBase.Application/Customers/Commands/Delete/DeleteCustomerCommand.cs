@@ -1,4 +1,5 @@
 ﻿using CleanArchitectureBase.Application.Interfaces;
+using CleanArchitectureBase.Domin.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,32 +10,31 @@ namespace CleanArchitectureBase.Application.Customers.Commands.Delete
         public int Id { get; set; }
         public class Handler : IRequestHandler<DeleteCustomerCommand, string>
         {
-            private readonly IApplicationDbContext _context;
-            public Handler(IApplicationDbContext context)
+            private readonly ICustomerRepository _customerRepository;
+            public Handler(ICustomerRepository customerRepository)
             {
-                _context = context;
+                 _customerRepository = customerRepository;
             }
             public async Task<string> Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
             {
                 try
                 {
-                    var customer = await _context.Customer.FirstOrDefaultAsync(a => a.Id == request.Id);
+                    var customer = await _customerRepository.GetByIdAsync(request.Id);
 
                     if (customer != null)
                     {
-                        customer.IsDeleted = true;
-                        await _context.SaveChangesAsync();
+                        await _customerRepository.Remove(customer);
 
                         return "Custmer Deleted Successfully";
                     }
                     else
                     {
-                        return "Customer Not Found";
+                        throw new Exception("Data Not Found");
                     }
                 }
                 catch (Exception ex)
                 {
-                    return "Data is not Valid";
+                    throw new Exception("Data Not Valid");
                 }
             }
         }

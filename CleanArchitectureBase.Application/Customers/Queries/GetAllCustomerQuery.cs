@@ -1,38 +1,24 @@
-﻿using CleanArchitectureBase.Application.Customers.Commands.Create;
-using CleanArchitectureBase.Application.Customers.Models;
-using CleanArchitectureBase.Application.Interfaces;
-using CleanArchitectureBase.Domin.Entities;
+﻿using CleanArchitectureBase.Domin.Entities;
+using CleanArchitectureBase.Domin.Repositories;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CleanArchitectureBase.Application.Customers.Queries
 {
-    public class GetAllCustomerQuery : IRequest<List<CustomerDataDto>>
+    public class GetAllCustomerQuery : IRequest<List<Customer>>
     {
-        public class Handler : IRequestHandler<GetAllCustomerQuery, List<CustomerDataDto>>
+        public class Handler : IRequestHandler<GetAllCustomerQuery, List<Customer>>
         {
-            private readonly IApplicationDbContext _context;
+            private readonly ICustomerRepository _customerRepository;
 
-            public Handler(IApplicationDbContext context)
+            public Handler(ICustomerRepository customerRepository)
             {
-                _context = context;
+                _customerRepository = customerRepository;
             }
-            public async Task<List<CustomerDataDto>> Handle(GetAllCustomerQuery request, CancellationToken cancellationToken)
+            public async Task<List<Customer>> Handle(GetAllCustomerQuery request, CancellationToken cancellationToken)
             {
                 try
                 {
-                    var customer = await _context.Customer.Select(a=> new CustomerDataDto
-                    {
-                        Name = a.Name,
-                        Email = a.Email,
-                        Phone = a.Phone,
-                    }).AsNoTracking().ToListAsync();
-
+                    var customer = await _customerRepository.GetAllAsync();
                     return customer;
                 }
                 catch (Exception ex)

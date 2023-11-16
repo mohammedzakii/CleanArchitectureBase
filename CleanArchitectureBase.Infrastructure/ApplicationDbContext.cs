@@ -1,6 +1,8 @@
 ﻿using CleanArchitectureBase.Application.Interfaces;
 using CleanArchitectureBase.Domin.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
+using System.Reflection.Metadata;
 
 namespace CleanArchitectureBase.persistence
 {
@@ -16,6 +18,7 @@ namespace CleanArchitectureBase.persistence
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+            builder.Entity<Customer>().HasQueryFilter(b => !b.IsDeleted);
             builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
         }
 

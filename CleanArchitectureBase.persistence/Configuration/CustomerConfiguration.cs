@@ -14,7 +14,7 @@ namespace CleanArchitectureBase.persistence.Configuration
             builder.Property(a => a.Name).IsRequired();
             builder.Property(a => a.Phone).IsRequired();
             builder.Property(a => a.Email).IsRequired();
-            builder.Property(a => a.IsDeleted).HasDefaultValue(false);
+            
         }
     }
 }

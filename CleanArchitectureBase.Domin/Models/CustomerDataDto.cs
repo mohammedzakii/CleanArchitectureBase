@@ -1,4 +1,4 @@
-﻿namespace CleanArchitectureBase.Application.Customers.Models
+﻿namespace CleanArchitectureBase.Domin.Customers.Models
 {
     public class CustomerDataDto
     {

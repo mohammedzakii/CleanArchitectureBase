@@ -1,37 +1,33 @@
-﻿using CleanArchitectureBase.Application.Customers.Models;
-using CleanArchitectureBase.Application.Interfaces;
+﻿using CleanArchitectureBase.Application.Interfaces;
+using CleanArchitectureBase.Domin.Entities;
+using CleanArchitectureBase.Domin.Repositories;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitectureBase.Application.Customers.Queries
 {
-    public class GetCustomerById : IRequest<CustomerDataDto>
+    public class GetCustomerById : IRequest<Customer>
     {
         public int Id { get; set; }
-        public class Handler : IRequestHandler<GetCustomerById, CustomerDataDto>
+        public class Handler : IRequestHandler<GetCustomerById, Customer>
         {
             private readonly IApplicationDbContext _context;
+            private readonly ICustomerRepository _customerRepository;
 
-            public Handler(IApplicationDbContext context)
+            public Handler(IApplicationDbContext context, ICustomerRepository customerRepository)
             {
                 _context = context;
+                _customerRepository = customerRepository;
             }
-            public async Task<CustomerDataDto> Handle(GetCustomerById request, CancellationToken cancellationToken)
+            public async Task<Customer> Handle(GetCustomerById request, CancellationToken cancellationToken)
             {
                 try
                 {
-                    var customer = await _context.Customer.Where(a=>a.Id == request.Id).Select(a => new CustomerDataDto
-                    {
-                        Name = a.Name,
-                        Email = a.Email,
-                        Phone = a.Phone,
-                    }).FirstOrDefaultAsync();
-
+                    var customer = await _customerRepository.GetByIdAsync(request.Id);   
                     return customer;
                 }
                 catch (Exception ex)
                 {
-                    return null;
+                    throw new Exception("Data Not Vaild");
                 }
             }
         }

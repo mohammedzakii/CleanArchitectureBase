@@ -4,6 +4,8 @@ using MediatR;
 using CleanArchitectureBase.Application.Interfaces;
 using FluentValidation.AspNetCore;
 using CleanArchitectureBase.Application.Customers.Commands.Create;
+using CleanArchitectureBase.Domin.Repositories;
+using CleanArchitectureBase.Infrastructure.Presistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +19,8 @@ dbContextOptions => dbContextOptions
 
 builder.Services.AddMediatR(typeof(ApplicationDbContext).Assembly);
 builder.Services.AddMediatR(typeof(AddNewCustomerCommand).Assembly);
+
+builder.Services.AddTransient<ICustomerRepository, CustomerRepository>();
 //builder.Services.AddControllers();
 
 

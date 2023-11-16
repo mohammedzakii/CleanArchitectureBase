@@ -1,5 +1,6 @@
 ﻿using CleanArchitectureBase.Application.Interfaces;
 using CleanArchitectureBase.Domin.Entities;
+using CleanArchitectureBase.Domin.Repositories;
 using MediatR;
 
 namespace CleanArchitectureBase.Application.Customers.Commands.Create
@@ -12,10 +13,12 @@ namespace CleanArchitectureBase.Application.Customers.Commands.Create
         public class Handler : IRequestHandler<AddNewCustomerCommand, string>
         {
             private readonly IApplicationDbContext _context;
+            private readonly ICustomerRepository _customerRepository;
 
-            public Handler(IApplicationDbContext context)
+            public Handler(IApplicationDbContext context , ICustomerRepository customerRepository)
             {
                 _context = context;
+                _customerRepository = customerRepository;
             }
             public async Task<string> Handle(AddNewCustomerCommand request, CancellationToken cancellationToken)
             {
@@ -28,9 +31,8 @@ namespace CleanArchitectureBase.Application.Customers.Commands.Create
                         Phone = request.Phone,
                     };
 
-                    _context.Customer.Add(newCustomer);
-                    await _context.SaveChangesAsync();
-
+                    var test =await _customerRepository.Add(newCustomer);
+                    
                     return "Custmer Added Successfully";
                 }
                 catch (Exception ex)
