@@ -26,8 +26,8 @@ namespace CleanArchitectureBase.Application.Customers.Commands.Create
                 {
                     var newCustomer = new Customer
                     {
-                        Email = request.Email,
-                        Name = request.Name,
+                        Email = request.Email.Trim(),
+                        Name = request.Name.Trim(),
                         Phone = request.Phone,
                     };
 

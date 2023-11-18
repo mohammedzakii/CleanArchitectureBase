@@ -6,6 +6,7 @@ using FluentValidation.AspNetCore;
 using CleanArchitectureBase.Application.Customers.Commands.Create;
 using CleanArchitectureBase.Domin.Repositories;
 using CleanArchitectureBase.Infrastructure.Presistence;
+using CleanArchitectureBase.WebApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +31,8 @@ builder.Services.AddControllers().AddFluentValidation(fv => fv.RegisterValidator
 
 var app = builder.Build();
 
+
+app.UseMiddleware<ExceptionHandling>();
 // Configure the HTTP request pipeline.
 
 if (app.Environment.IsDevelopment())

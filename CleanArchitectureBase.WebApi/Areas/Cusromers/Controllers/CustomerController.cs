@@ -25,6 +25,7 @@ namespace CleanArchitectureBase.WebApi.Areas.Cusromers.Controllers
         {
             try
             {
+                commmand.Name = commmand.Name.Trim();
                 return await MediatorExecute(commmand);
             }
             catch (Exception ex)

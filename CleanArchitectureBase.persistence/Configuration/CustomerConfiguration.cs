@@ -11,9 +11,9 @@ namespace CleanArchitectureBase.persistence.Configuration
             builder.ToTable("Customers");
             builder.HasKey(prob => prob.Id);
             builder.Property(x => x.Id).IsRequired();
-            builder.Property(a => a.Name).IsRequired();
-            builder.Property(a => a.Phone).IsRequired();
-            builder.Property(a => a.Email).IsRequired();
+            builder.Property(a => a.Name).IsRequired().HasMaxLength(50);
+            builder.Property(a => a.Phone).IsRequired().HasMaxLength(50);
+            builder.Property(a => a.Email).IsRequired().HasMaxLength(50);
             
         }
     }
