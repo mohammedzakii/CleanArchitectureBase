@@ -33,6 +33,8 @@ namespace CleanArchitectureBase.WebApi.Areas.Cusromers.Controllers
                 return Ok();
             }
         }
+
+
         [HttpPost("UpdateCustomer")]
         public async Task<IActionResult> updateCustomers(UpdateCustomerCommand command)
         {
@@ -45,7 +47,7 @@ namespace CleanArchitectureBase.WebApi.Areas.Cusromers.Controllers
                 return Ok();
             }
         }
-        [HttpPost("DeleteCustomer")]
+        [HttpDelete("DeleteCustomer")]
         public async Task<IActionResult> DeleteCustomers([Required] int Id)
         {
             try
@@ -71,7 +73,7 @@ namespace CleanArchitectureBase.WebApi.Areas.Cusromers.Controllers
                 return Ok();
             }
         }
-        [HttpPost("GetAllCustomers")]
+        [HttpGet("GetAllCustomers")]
         public async Task<IActionResult> GetAllCustomers()
         {
             try

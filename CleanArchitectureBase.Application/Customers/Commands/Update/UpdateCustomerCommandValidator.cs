@@ -18,14 +18,17 @@ namespace CleanArchitectureBase.Application.Customers.Commands.Update
 
             RuleFor(a => a.Name)
                 .MinimumLength(3).When(user => !string.IsNullOrEmpty(user.Name))
-                .WithMessage("Name Must Be Longer than 3 Characters");
+                .WithMessage("Name Must Be Longer than 3 Characters")
+                .Must(name => !string.IsNullOrWhiteSpace(name.Trim())).WithMessage("Name cannot contain white spaces."); ;
 
             RuleFor(a => a.Phone).Matches(@"^[0-9]{11}$")
                 .When(user => !string.IsNullOrEmpty(user.Phone))
-                .WithMessage("Phone number must be 11 numeric characters.");
+                .WithMessage("Phone number must be 11 numeric characters.")
+                .Must(Phone => !string.IsNullOrWhiteSpace(Phone.Trim())).WithMessage("Phone cannot contain white spaces.");
 
             RuleFor(a => a.Email).EmailAddress()
-                .When(user => !string.IsNullOrEmpty(user.Email)).WithMessage("Invalid Email Format.");
+                .When(user => !string.IsNullOrEmpty(user.Email)).WithMessage("Invalid Email Format.")
+                .Must(Email => !string.IsNullOrWhiteSpace(Email.Trim())).WithMessage("Email cannot contain white spaces."); ;
         }
     }
 }
